@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "253706564479",
+    "firebase_url": "https://next-3f50a.firebaseio.com",
+    "project_id": "next-3f50a",
+    "storage_bucket": "next-3f50a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253706564479:android:652d78bca7881b49",
+        "android_client_info": {
+          "package_name": "com.example.debarunlahiri.next"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253706564479-vu5276b1jrivchutbcns6jq5os47ti8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.debarunlahiri.next",
+            "certificate_hash": "b5e82772c731a06664f1d76928c8697d9179c2dd"
+          }
+        },
+        {
+          "client_id": "253706564479-ko2lk6sruknjt934s4q86tal0oeo8jci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1t82fkByCLhFh2BVWFYgBJeswpqWWkoM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253706564479-ko2lk6sruknjt934s4q86tal0oeo8jci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

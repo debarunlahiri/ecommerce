@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Next</string>
+    <string-array name="spinner">
+        <item>Select Category</item>
+        <item>Electronics</item>
+        <item>Games</item>
+        <item>Clothes</item>
+    </string-array>
+</resources>
