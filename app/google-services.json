@@ -8,12 +8,57 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:253706564479:android:9a2a0122318001928ae04a",
+        "android_client_info": {
+          "package_name": "com.debarunlahiri.dinmart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253706564479-9710nb7jau3d2qi05odusi4ohog780gh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.debarunlahiri.dinmart",
+            "certificate_hash": "e5a151f81ff6906befee5afadfaeafef371ab60c"
+          }
+        },
+        {
+          "client_id": "253706564479-ko2lk6sruknjt934s4q86tal0oeo8jci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1t82fkByCLhFh2BVWFYgBJeswpqWWkoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253706564479-ko2lk6sruknjt934s4q86tal0oeo8jci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:253706564479:android:652d78bca7881b49",
         "android_client_info": {
           "package_name": "com.example.debarunlahiri.next"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "253706564479-qfrv0kld8av3i092s5gc5f4m8g11955p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.debarunlahiri.next",
+            "certificate_hash": "e5a151f81ff6906befee5afadfaeafef371ab60c"
+          }
+        },
         {
           "client_id": "253706564479-vu5276b1jrivchutbcns6jq5os47ti8a.apps.googleusercontent.com",
           "client_type": 1,
@@ -33,20 +78,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "253706564479-ko2lk6sruknjt934s4q86tal0oeo8jci.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

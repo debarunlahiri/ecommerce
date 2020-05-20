@@ -1,9 +1,20 @@
 <resources>
-    <string name="app_name">Next</string>
+    <string name="app_name">DIN Mart</string>
     <string-array name="spinner">
         <item>Select Category</item>
-        <item>Electronics</item>
-        <item>Games</item>
-        <item>Clothes</item>
+        <item>Fruits</item>
+        <item>Vegetables</item>
+        <item>Snacks</item>
+        <item>Groceries</item>
     </string-array>
+
+    <string-array name="weight_unit">
+        <item>Gram</item>
+        <item>Kg</item>
+        <item>Piece</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_on_call_phone_number">+919896079255</string>
 </resources>

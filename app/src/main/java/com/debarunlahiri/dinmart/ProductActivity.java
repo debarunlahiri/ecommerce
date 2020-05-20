@@ -1,0 +1,258 @@
+package com.debarunlahiri.dinmart;
+
+import android.content.Intent;
+import android.graphics.Color;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
+
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.debarunlahiri.dinmart.next.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+
+public class ProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    private Toolbar toolbar5;
+
+    private TextView tvPName, tvPPrice, tvPDesc, tvSName, tvProductCount;
+    private ImageView productIV;
+    private Button button2,button;
+    private EditText etUnit;
+    private ImageButton ibProductMinus, ibProductPlus;
+    private CardView cvProductCounter;
+
+    private DatabaseReference mDatabase;
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+
+    private String user_id;
+    private String email_id;
+
+    private String product_key;
+    private String product_name;
+    private String product_price;
+    private String product_description;
+    private String product_weight_unit;
+    private String product_image;
+    private String product_category;
+    private String product_quantity;
+
+    private Spinner spWeightUnit;
+    private int itemCount = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_product);
+
+        toolbar5 = findViewById(R.id.toolbar5);
+        toolbar5.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar5);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar5.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
+        toolbar5.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        tvPName = findViewById(R.id.tvPName);
+        tvPPrice = findViewById(R.id.tvPPrice);
+        tvPDesc = findViewById(R.id.tvPDesc);
+        tvSName = findViewById(R.id.tvSName);
+        productIV = findViewById(R.id.productIV);
+        button2 = findViewById(R.id.button2);
+        button = findViewById(R.id.button);
+        spWeightUnit = findViewById(R.id.spWeightUnit);
+        etUnit = findViewById(R.id.etUnit);
+        ibProductMinus = findViewById(R.id.ibProductMinus);
+        ibProductPlus = findViewById(R.id.ibProductPlus);
+        tvProductCount = findViewById(R.id.tvProductCount);
+        cvProductCounter = findViewById(R.id.cvProductCounter);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        Bundle b = getIntent().getExtras();
+        product_key = b.get("product_key").toString();
+        product_category = b.get("product_category").toString();
+
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.weight_unit, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spWeightUnit.setAdapter(arrayAdapter);
+        spWeightUnit.setOnItemSelectedListener(this);
+
+        tvProductCount.setText(String.valueOf(itemCount));
+
+        cvProductCounter.setVisibility(View.GONE);
+        if (currentUser == null) {
+            sendToLogin();
+        } else {
+            if (b != null) {
+                getUserDetails();
+                mDatabase.child("products").child(product_key).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        product_description = dataSnapshot.child("product_description").getValue().toString();
+                        product_name = dataSnapshot.child("product_name").getValue().toString();
+                        product_price = dataSnapshot.child("product_price").getValue().toString();
+                        product_image = dataSnapshot.child("product_image").getValue().toString();
+                        product_image = dataSnapshot.child("product_image").getValue().toString();
+                        product_weight_unit = dataSnapshot.child("product_weight_unit").getValue().toString();
+                        product_quantity = dataSnapshot.child("product_quantity").getValue().toString();
+
+                        showProduct();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                button2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent productIntent = new Intent(ProductActivity.this, AddDeliveryDetails.class);
+                        //productIntent.putExtra("product_key", );
+                        productIntent.putExtra("product_name", product_name);
+                        productIntent.putExtra("product_price", product_price);
+                        productIntent.putExtra("product_image", product_image);
+                        productIntent.putExtra("product_description", product_description);
+                        productIntent.putExtra("seller_name", "DIN Mart");
+                        productIntent.putExtra("from_cart", "no");
+                        productIntent.putExtra("order_status", "pending");
+                        productIntent.putExtra("order_weight", etUnit.getText().toString());
+                        productIntent.putExtra("order_unit", etUnit.getText().toString());
+                        startActivity(productIntent);
+                    }
+                });
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cvProductCounter.setVisibility(View.GONE);
+                        saveProductToCart();
+                    }
+                });
+            } else {
+                sendToMain();
+            }
+        }
+
+        ibProductMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemCount >= 1) {
+                    tvProductCount.setText(String.valueOf(itemCount--));
+                }
+
+            }
+        });
+
+        ibProductPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemCount <= 5) {
+                    tvProductCount.setText(String.valueOf(itemCount++));
+//                    mDatabase.child()
+                }
+
+            }
+        });
+
+    }
+
+    private void saveProductToCart() {
+        String cart_key = mDatabase.child("cart").child(user_id).push().getKey();
+        HashMap<String, Object> dataMap = new HashMap<>();
+        dataMap.put("product_key", product_key);
+        dataMap.put("product_item_count", String.valueOf(itemCount));
+        dataMap.put("product_price", product_price);
+        dataMap.put("product_quantity", product_quantity);
+        dataMap.put("product_weight_unit", product_weight_unit);
+        dataMap.put("user_id", user_id);
+        dataMap.put("visibility", true);
+        dataMap.put("total_product_price", "0");
+        mDatabase.child("cart").child(user_id).child(product_key).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(getApplicationContext(), "Product added successfully to cart", Toast.LENGTH_LONG).show();
+//                Intent cartIntent = new Intent(ProductActivity.this, CartActivity.class);
+//                startActivity(cartIntent);
+//                finish();
+            }
+        });
+    }
+
+    private void getUserDetails() {
+        user_id = currentUser.getUid();
+        mDatabase.child("users").child(user_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                email_id = dataSnapshot.child("email").getValue().toString();
+                //showProduct();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showProduct() {
+        Picasso.get().load(product_image).into(productIV);
+        toolbar5.setTitle(product_name);
+        tvPName.setText(product_name);
+        tvSName.setText("by " + "DIN Mart");
+        tvPPrice.setText("₹" + product_price + " | " + product_quantity + "/" + product_weight_unit.toLowerCase());
+        tvPDesc.setText(product_description);
+    }
+
+    private void sendToLogin() {
+        Intent loginIntent = new Intent(ProductActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
+
+    private void sendToMain() {
+        Intent registerIntent = new Intent(ProductActivity.this, MainActivity.class);
+        startActivity(registerIntent);
+        finish();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+}

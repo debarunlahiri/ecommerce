@@ -1,57 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.debarunlahiri.next">
+    package="com.debarunlahiri.dinmart.next">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/circle_logo"
+        android:icon="@drawable/din_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/circle_logo"
+        android:roundIcon="@drawable/din_logo"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgotPasswordActivity"></activity>
-        <activity android:name=".PhoneVerifyActivity" />
-        <activity android:name=".EmailVerifyActivity" />
-        <activity android:name=".EmailVerificationActivity" />
-        <activity android:name=".VAPActivity" />
-        <activity android:name=".BunrabActivity" />
-        <activity android:name=".AddDeliveryDetails" />
-        <activity android:name=".CartBuyActivity" />
-        <activity android:name=".StartActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.debarunlahiri.dinmart.PrivacyPolicyActivity"></activity>
+        <activity android:name="com.debarunlahiri.dinmart.FinalPriceActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.business.BusinessOrderDetailsActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.business.BusinessViewAllOrdersActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.BusinessOrdersActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.HomeActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.OtpActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.SignInActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.ForgotPasswordActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.PhoneVerifyActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.EmailVerifyActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.EmailVerificationActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.VAPActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.AddDeliveryDetails" />
+        <activity android:name="com.debarunlahiri.dinmart.CartBuyActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.StartActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".BusinessLoginActivity" />
-        <activity android:name=".BusinessRegisterActivity" />
-        <activity android:name=".ProductMainSubListActivity" />
-        <activity android:name=".BusinessDetailsAddActivity" />
-        <activity android:name=".BusinessDetailsViewActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".AddProductActivity" />
-        <activity android:name=".AddUserDetailsActivity" />
-        <activity android:name=".ProductActivity" />
-        <activity android:name=".CartActivity" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".BuyActivity" />
-        <activity android:name=".CardActivity" />
-        <activity android:name=".OrderActivity" />
-        <activity android:name=".EditUserInfoActivity" />
-        <activity android:name=".EditCompanyInfoActivity" />
-        <activity android:name=".SplashActivity" />
-        <activity android:name=".ChangeActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.LoginActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.RegisterActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.BusinessLoginActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.BusinessRegisterActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.ProductMainSubListActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.BusinessDetailsAddActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.BusinessDetailsViewActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.SettingsActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.AddProductActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.AddUserDetailsActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.ProductActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.CartActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.AboutActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.CardActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.OrderActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.EditUserInfoActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.EditCompanyInfoActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.SplashActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.ChangeActivity" />
+
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
     </application>
 
 </manifest>

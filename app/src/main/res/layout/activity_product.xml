@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background"
-    tools:context=".ProductActivity">
+    tools:context="com.debarunlahiri.dinmart.ProductActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
+        android:background="?attr/colorPrimary"
         android:elevation="1dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -47,7 +47,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar5"
-                app:srcCompat="@drawable/bg" />
+                app:srcCompat="@drawable/ic_launcher_background" />
 
             <TextView
                 android:id="@+id/tvPName"
@@ -65,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="TextView"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvPPrice"
@@ -85,14 +86,36 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etUnit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:ems="10"
+                    android:inputType="number" />
+
+                <Spinner
+                    android:id="@+id/spWeightUnit"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="0.8" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:background="@drawable/color_btn"
+                android:background="@color/colorPrimary"
                 android:text="Buy Now"
-
+                android:visibility="gone"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
@@ -102,13 +125,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:background="#FFF9F9"
+                android:background="@color/colorPrimary"
                 android:text="Add to Cart"
                 android:textAllCaps="false"
                 android:textSize="16sp"
+                android:textColor="@android:color/white"
                 android:visibility="visible" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvProductCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <ImageButton
+                        android:id="@+id/ibProductMinus"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="0.5"
+                        android:background="@color/colorPrimary"
+                        android:tint="@android:color/white"
+                        app:srcCompat="@drawable/ic_remove_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/tvProductCount"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/ibProductPlus"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="0.5"
+                        android:background="@color/colorPrimary"
+                        android:tint="@android:color/white"
+                        app:srcCompat="@drawable/ic_add_black_24dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

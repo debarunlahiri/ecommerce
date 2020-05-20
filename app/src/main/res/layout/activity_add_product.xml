@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddProductActivity">
+    tools:context="com.debarunlahiri.dinmart.AddProductActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
+        android:background="@color/colorPrimary"
         android:elevation="5dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -23,6 +23,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,8 +47,8 @@
                 android:id="@+id/imageView5"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/img1" />
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_add_black_24dp" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -61,12 +62,12 @@
             <EditText
                 android:id="@+id/etAddProductName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
+                android:background="@drawable/edittext_border_bg"
                 android:ems="10"
-                android:hint="Product name "
-                android:inputType="textCapSentences|textMultiLine|textPersonName"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
+                android:hint="Product name"
+                android:inputType="textPersonName|textCapSentences"
+                android:padding="5dp" />
 
             <TextView
                 android:id="@+id/textView17"
@@ -80,12 +81,48 @@
             <EditText
                 android:id="@+id/etAddProductPrice"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
+                android:background="@drawable/edittext_border_bg"
                 android:ems="10"
                 android:hint="Product price"
                 android:inputType="number"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Product quantity "
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <EditText
+                    android:id="@+id/etAddProductQuantity"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1.2"
+                    android:background="@drawable/edittext_border_bg"
+                    android:ems="10"
+                    android:hint="Product quantity"
+                    android:inputType="numberSigned|number"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+
+                <Spinner
+                    android:id="@+id/spWeightUnit"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="0.8" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/textView18"
@@ -100,6 +137,7 @@
                 android:id="@+id/etAddProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/edittext_border_bg"
                 android:ems="10"
                 android:gravity="top|left"
                 android:hint="Product description"
@@ -113,12 +151,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
 
+
             <Button
                 android:id="@+id/addbtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:background="@drawable/color_btn"
+                android:background="@color/colorPrimary"
                 android:padding="5dp"
                 android:text="Add"
                 android:textAllCaps="false"
@@ -126,4 +165,4 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
