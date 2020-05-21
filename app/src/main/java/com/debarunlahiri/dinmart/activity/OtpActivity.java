@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.activity;
 
 import android.content.Intent;
 import androidx.annotation.NonNull;
@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.MainActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

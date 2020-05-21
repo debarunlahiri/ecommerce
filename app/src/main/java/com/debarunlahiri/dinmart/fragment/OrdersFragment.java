@@ -77,41 +77,43 @@ public class OrdersFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        user_id = currentUser.getUid();
-
         rvVAP = view.findViewById(R.id.rvVAP);
         viewAllProductsAdapter = new ViewAllProductsAdapter(mContext, businessOrdersList, "users");
         linearLayoutManager = new LinearLayoutManager(mContext);
         rvVAP.setLayoutManager(linearLayoutManager);
         rvVAP.setAdapter(viewAllProductsAdapter);
 
-        mDatabase.child("orders").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                BusinessOrders businessOrders = dataSnapshot.getValue(BusinessOrders.class);
-                businessOrdersList.add(businessOrders);
-                viewAllProductsAdapter.notifyDataSetChanged();
-            }
+        if (currentUser != null) {
+            user_id = currentUser.getUid();
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            mDatabase.child("orders").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    BusinessOrders businessOrders = dataSnapshot.getValue(BusinessOrders.class);
+                    businessOrdersList.add(businessOrders);
+                    viewAllProductsAdapter.notifyDataSetChanged();
+                }
 
-            }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
 
-            }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
 
-            }
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 }

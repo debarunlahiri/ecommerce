@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.debarunlahiri.dinmart.MainActivity;
+import com.debarunlahiri.dinmart.adapter.ProductsAdapter;
+import com.debarunlahiri.dinmart.model.Products;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -84,43 +87,41 @@ public class ProductMainSubListActivity extends AppCompatActivity {
 
 
         if (currentUser == null) {
-            sendToLogin();
+
         } else {
             user_id = mAuth.getCurrentUser().getUid();
-
-            mDatabase.child("products").addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    Products products = dataSnapshot.getValue(Products.class);
-                    if (products.getProduct_category().equals(category)) {
-                        productsLists.add(products);
-                        productsAdapter.notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
         }
 
+        mDatabase.child("products").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Products products = dataSnapshot.getValue(Products.class);
+                if (products.getProduct_category().equals(category)) {
+                    productsLists.add(products);
+                    productsAdapter.notifyDataSetChanged();
+                }
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
 

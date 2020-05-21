@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.model.Products;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

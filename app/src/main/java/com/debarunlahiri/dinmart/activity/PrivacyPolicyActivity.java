@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

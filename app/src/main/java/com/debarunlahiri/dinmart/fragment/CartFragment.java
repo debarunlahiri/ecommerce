@@ -1,6 +1,5 @@
 package com.debarunlahiri.dinmart.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.debarunlahiri.dinmart.AddDeliveryDetails;
-import com.debarunlahiri.dinmart.Cart;
-import com.debarunlahiri.dinmart.CartAdapter;
-import com.debarunlahiri.dinmart.FinalPriceActivity;
+import com.debarunlahiri.dinmart.model.Cart;
+import com.debarunlahiri.dinmart.adapter.CartAdapter;
+import com.debarunlahiri.dinmart.activity.FinalPriceActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -97,119 +94,111 @@ public class CartFragment extends Fragment {
         rvCart.setAdapter(cartAdapter);
         rvCart.setLayoutManager(linearLayoutManager);
 
-        user_id = currentUser.getUid();
-
         cvCartProceed.setVisibility(View.GONE);
 
-        mDatabase.child("cart").child(user_id).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()) {
-                    String key = dataSnapshot.getKey();
-                    mKeys.add(key);
-                    Cart cart = dataSnapshot.getValue(Cart.class);
-                    if (cart.isVisibility()) {
-                        cartList.add(cart);
-                    }
-                    cartAdapter.notifyDataSetChanged();
-                }
+        if (currentUser != null) {
+            user_id = currentUser.getUid();
 
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Cart cart = dataSnapshot.getValue(Cart.class);
-                String key = dataSnapshot.getKey();
-                int index = mKeys.indexOf(key);
-                if (cart.getProduct_key().equals(key)) {
-                    if (!cart.isVisibility()) {
-                        cartList.remove(index);
+            mDatabase.child("cart").child(user_id).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    if (dataSnapshot.exists()) {
+                        String key = dataSnapshot.getKey();
+                        mKeys.add(key);
+                        Cart cart = dataSnapshot.getValue(Cart.class);
+                        if (cart.isVisibility()) {
+                            cartList.add(cart);
+                        }
                         cartAdapter.notifyDataSetChanged();
                     }
+
                 }
 
-                if (cartList.isEmpty()) {
-                    cvCartProceed.setVisibility(View.GONE);
-                }
-
-//                for (Cart c : cartList) {
-//                    if (c.getCart_key().equals(key)) {
-//                        Toast.makeText(getActivity(), c.getCart_key(), Toast.LENGTH_LONG).setDuration(1000);
-//                        cartList.remove(c);
-//                        cartAdapter.notifyDataSetChanged();
-//                    }
-//                }
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        getTotalPrice();
-        getTotalProductCount();
-
-
-        button7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent buyIntent = new Intent(getActivity(), FinalPriceActivity.class);
-                buyIntent.putExtra("total_price", String.valueOf(total_price));
-                buyIntent.putExtra("total_product_count", String.valueOf(total_product_count));
-                buyIntent.putExtra("from_cart", "yes");
-                buyIntent.putParcelableArrayListExtra("cart_list", (ArrayList<? extends Parcelable>) cartList);
-                startActivity(buyIntent);
-            }
-        });
-
-        mDatabase.child("cart").child(user_id).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()) {
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     Cart cart = dataSnapshot.getValue(Cart.class);
-                    if (cart.isVisibility()) {
-                        cvCartProceed.setVisibility(View.VISIBLE);
+                    String key = dataSnapshot.getKey();
+                    int index = mKeys.indexOf(key);
+                    if (cart.getProduct_key().equals(key)) {
+                        if (!cart.isVisibility()) {
+                            cartList.remove(index);
+                            cartAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    if (cartList.isEmpty()) {
+                        cvCartProceed.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            getTotalPrice();
+            getTotalProductCount();
+
+
+            button7.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent buyIntent = new Intent(getActivity(), FinalPriceActivity.class);
+                    buyIntent.putExtra("total_price", String.valueOf(total_price));
+                    buyIntent.putExtra("total_product_count", String.valueOf(total_product_count));
+                    buyIntent.putExtra("from_cart", "yes");
+                    buyIntent.putParcelableArrayListExtra("cart_list", (ArrayList<? extends Parcelable>) cartList);
+                    startActivity(buyIntent);
+                }
+            });
+
+            mDatabase.child("cart").child(user_id).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    if (dataSnapshot.exists()) {
+                        Cart cart = dataSnapshot.getValue(Cart.class);
+                        if (cart.isVisibility()) {
+                            cvCartProceed.setVisibility(View.VISIBLE);
+                        } else {
+                            cvCartProceed.setVisibility(View.GONE);
+                        }
                     } else {
                         cvCartProceed.setVisibility(View.GONE);
                     }
-                } else {
-                    cvCartProceed.setVisibility(View.GONE);
                 }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
-
+                }
+            });
+        }
     }
 
     private void getTotalPrice() {

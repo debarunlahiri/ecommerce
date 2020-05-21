@@ -17,21 +17,17 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.debarunlahiri.dinmart.PrivacyPolicyActivity"></activity>
-        <activity android:name="com.debarunlahiri.dinmart.FinalPriceActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.PrivacyPolicyActivity"></activity>
+        <activity android:name="com.debarunlahiri.dinmart.activity.FinalPriceActivity" />
         <activity android:name="com.debarunlahiri.dinmart.business.BusinessOrderDetailsActivity" />
         <activity android:name="com.debarunlahiri.dinmart.business.BusinessViewAllOrdersActivity" />
         <activity android:name="com.debarunlahiri.dinmart.BusinessOrdersActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.HomeActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.OtpActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.HomeActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.OtpActivity" />
         <activity android:name="com.debarunlahiri.dinmart.SignInActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.ForgotPasswordActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.PhoneVerifyActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.EmailVerifyActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.EmailVerificationActivity" />
         <activity android:name="com.debarunlahiri.dinmart.VAPActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.AddDeliveryDetails" />
-        <activity android:name="com.debarunlahiri.dinmart.CartBuyActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.AddDeliveryDetails" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.CartBuyActivity" />
         <activity android:name="com.debarunlahiri.dinmart.StartActivity" />
         <activity android:name="com.debarunlahiri.dinmart.MainActivity">
             <intent-filter>
@@ -40,25 +36,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.debarunlahiri.dinmart.LoginActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.RegisterActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.LoginActivity" />
         <activity android:name="com.debarunlahiri.dinmart.BusinessLoginActivity" />
         <activity android:name="com.debarunlahiri.dinmart.BusinessRegisterActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.ProductMainSubListActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.ProductMainSubListActivity" />
         <activity android:name="com.debarunlahiri.dinmart.BusinessDetailsAddActivity" />
         <activity android:name="com.debarunlahiri.dinmart.BusinessDetailsViewActivity" />
         <activity android:name="com.debarunlahiri.dinmart.SettingsActivity" />
         <activity android:name="com.debarunlahiri.dinmart.AddProductActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.AddUserDetailsActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.ProductActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.CartActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.AboutActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.CardActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.OrderActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.EditUserInfoActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.AddUserDetailsActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.ProductActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.AboutActivity" />
+        <activity android:name="com.debarunlahiri.dinmart.activity.EditUserInfoActivity" />
         <activity android:name="com.debarunlahiri.dinmart.EditCompanyInfoActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.SplashActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.ChangeActivity" />
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->

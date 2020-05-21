@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.activity;
 
 import android.content.Intent;
 import androidx.annotation.NonNull;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.debarunlahiri.dinmart.model.Cart;
+import com.debarunlahiri.dinmart.MainActivity;
+import com.debarunlahiri.dinmart.StartActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

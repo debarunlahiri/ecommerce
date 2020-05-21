@@ -1,5 +1,6 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
@@ -19,6 +20,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.MainActivity;
+import com.debarunlahiri.dinmart.adapter.ProductsAdapter;
+import com.debarunlahiri.dinmart.model.Products;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +40,8 @@ import java.util.HashMap;
 public class ProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Toolbar toolbar5;
+
+    private Context mContext;
 
     private TextView tvPName, tvPPrice, tvPDesc, tvSName, tvProductCount;
     private ImageView productIV;
@@ -67,6 +73,8 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
+
+        mContext = ProductActivity.this;
 
         toolbar5 = findViewById(R.id.toolbar5);
         toolbar5.setTitleTextColor(Color.WHITE);
@@ -112,13 +120,14 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
 
         cvProductCounter.setVisibility(View.GONE);
         if (currentUser == null) {
-            sendToLogin();
+//            sendToLogin();
         } else {
             if (b != null) {
                 getUserDetails();
                 mDatabase.child("products").child(product_key).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Products products = dataSnapshot.getValue(Products.class);
                         product_description = dataSnapshot.child("product_description").getValue().toString();
                         product_name = dataSnapshot.child("product_name").getValue().toString();
                         product_price = dataSnapshot.child("product_price").getValue().toString();
@@ -127,7 +136,54 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
                         product_weight_unit = dataSnapshot.child("product_weight_unit").getValue().toString();
                         product_quantity = dataSnapshot.child("product_quantity").getValue().toString();
 
-                        showProduct();
+                        Picasso.get().load(product_image).into(productIV);
+                        toolbar5.setTitle(product_name);
+                        tvPName.setText(product_name);
+                        tvSName.setText("by " + "DIN Mart");
+                        tvPPrice.setText("₹" + product_price + " | " + products.getProduct_quantity() + "/" + product_weight_unit.toLowerCase());
+                        tvPDesc.setText(product_description);
+
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                cvProductCounter.setVisibility(View.VISIBLE);
+                                saveProductToCart();
+                            }
+                        });
+
+                        ibProductMinus.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (itemCount >= 1) {
+                                    itemCount = Integer.parseInt(tvProductCount.getText().toString());
+                                    tvProductCount.setText(String.valueOf(--itemCount));
+                                    int total_price = Integer.parseInt(product_price)*itemCount;
+                                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
+                                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
+                                }
+
+                            }
+                        });
+
+                        ibProductPlus.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                itemCount = Integer.parseInt(tvProductCount.getText().toString());
+                                tvProductCount.setText(String.valueOf(++itemCount));
+                                int total_price = Integer.parseInt(product_price)*itemCount;
+                                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
+                                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
+                            }
+                        });
+
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentUser != null) {
+                                    saveProductToCart();
+                                }
+                            }
+                        });
                     }
 
                     @Override
@@ -135,60 +191,33 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
 
                     }
                 });
-                button2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent productIntent = new Intent(ProductActivity.this, AddDeliveryDetails.class);
-                        //productIntent.putExtra("product_key", );
-                        productIntent.putExtra("product_name", product_name);
-                        productIntent.putExtra("product_price", product_price);
-                        productIntent.putExtra("product_image", product_image);
-                        productIntent.putExtra("product_description", product_description);
-                        productIntent.putExtra("seller_name", "DIN Mart");
-                        productIntent.putExtra("from_cart", "no");
-                        productIntent.putExtra("order_status", "pending");
-                        productIntent.putExtra("order_weight", etUnit.getText().toString());
-                        productIntent.putExtra("order_unit", etUnit.getText().toString());
-                        startActivity(productIntent);
-                    }
-                });
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cvProductCounter.setVisibility(View.GONE);
-                        saveProductToCart();
-                    }
-                });
+
+
             } else {
                 sendToMain();
             }
         }
 
-        ibProductMinus.setOnClickListener(new View.OnClickListener() {
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (itemCount >= 1) {
-                    tvProductCount.setText(String.valueOf(itemCount--));
-                }
-
+                Intent productIntent = new Intent(ProductActivity.this, AddDeliveryDetails.class);
+                //productIntent.putExtra("product_key", );
+                productIntent.putExtra("product_name", product_name);
+                productIntent.putExtra("product_price", product_price);
+                productIntent.putExtra("product_image", product_image);
+                productIntent.putExtra("product_description", product_description);
+                productIntent.putExtra("seller_name", "DIN Mart");
+                productIntent.putExtra("from_cart", "no");
+                productIntent.putExtra("order_status", "pending");
+                productIntent.putExtra("order_weight", etUnit.getText().toString());
+                productIntent.putExtra("order_unit", etUnit.getText().toString());
+                startActivity(productIntent);
             }
         });
-
-        ibProductPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (itemCount <= 5) {
-                    tvProductCount.setText(String.valueOf(itemCount++));
-//                    mDatabase.child()
-                }
-
-            }
-        });
-
     }
 
     private void saveProductToCart() {
-        String cart_key = mDatabase.child("cart").child(user_id).push().getKey();
         HashMap<String, Object> dataMap = new HashMap<>();
         dataMap.put("product_key", product_key);
         dataMap.put("product_item_count", String.valueOf(itemCount));
@@ -201,10 +230,9 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         mDatabase.child("cart").child(user_id).child(product_key).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(getApplicationContext(), "Product added successfully to cart", Toast.LENGTH_LONG).show();
-//                Intent cartIntent = new Intent(ProductActivity.this, CartActivity.class);
-//                startActivity(cartIntent);
-//                finish();
+                Toast.makeText(mContext, "Product added successfully to cart", Toast.LENGTH_LONG).show();
+                button.setVisibility(View.GONE);
+                cvProductCounter.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -225,13 +253,8 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         });
     }
 
-    private void showProduct() {
-        Picasso.get().load(product_image).into(productIV);
-        toolbar5.setTitle(product_name);
-        tvPName.setText(product_name);
-        tvSName.setText("by " + "DIN Mart");
-        tvPPrice.setText("₹" + product_price + " | " + product_quantity + "/" + product_weight_unit.toLowerCase());
-        tvPDesc.setText(product_description);
+    private void showProduct(Products products) {
+
     }
 
     private void sendToLogin() {

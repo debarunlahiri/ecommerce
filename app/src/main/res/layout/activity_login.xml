@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    tools:context="com.debarunlahiri.dinmart.LoginActivity">
+    tools:context="com.debarunlahiri.dinmart.activity.LoginActivity">
 
     <View
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
         android:textColor="@color/colorBlack"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +49,7 @@
         android:padding="10dp"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorGray"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />

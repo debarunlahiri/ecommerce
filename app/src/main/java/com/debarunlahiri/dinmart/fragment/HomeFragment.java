@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.debarunlahiri.dinmart.ProductMainSubListActivity;
+import com.debarunlahiri.dinmart.activity.ProductMainSubListActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;

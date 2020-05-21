@@ -11,6 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.activity.AddUserDetailsActivity;
+import com.debarunlahiri.dinmart.activity.EditUserInfoActivity;
+import com.debarunlahiri.dinmart.activity.HomeActivity;
+import com.debarunlahiri.dinmart.activity.LoginActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -82,31 +86,6 @@ public class MainActivity extends AppCompatActivity {
         Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
         startActivity(homeIntent);
         finish();
-    }
-
-    private void checkVerification() {
-        mDatabase.child("users").child(user_id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                boolean email = (boolean) dataSnapshot.child("email").getValue();
-                boolean phone = (boolean) dataSnapshot.child("phone").getValue();
-
-                if (email == false) {
-                    Intent emailIntent = new Intent(MainActivity.this, EmailVerifyActivity.class);
-                    startActivity(emailIntent);
-                    finish();
-                } else if (phone == false) {
-                    Intent phoneIntent = new Intent(MainActivity.this, PhoneVerifyActivity.class);
-                    startActivity(phoneIntent);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     private void checkUserDetails() {
@@ -239,12 +218,6 @@ public class MainActivity extends AppCompatActivity {
     private void sendToEdit() {
         Intent editIntent = new Intent(MainActivity.this, EditUserInfoActivity.class);
         startActivity(editIntent);
-        finish();
-    }
-
-    private void sendToRegister() {
-        Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
-        startActivity(registerIntent);
         finish();
     }
 

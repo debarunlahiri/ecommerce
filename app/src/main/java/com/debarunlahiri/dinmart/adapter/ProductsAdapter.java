@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.activity.AddDeliveryDetails;
+import com.debarunlahiri.dinmart.activity.ProductActivity;
+import com.debarunlahiri.dinmart.model.Products;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -65,35 +68,37 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         currentUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        user_id = currentUser.getUid();
-
         viewHolder.cvProductCounter.setVisibility(View.GONE);
         viewHolder.bProductAddToCart.setVisibility(View.VISIBLE);
 
-        mDatabase.child("cart").child(user_id).child(products.getProduct_key()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    boolean isVisible = (boolean) dataSnapshot.child("visibility").getValue();
-                    itemCount = Integer.parseInt(dataSnapshot.child("product_item_count").getValue().toString());
-                    if (isVisible) {
-                        viewHolder.bProductAddToCart.setVisibility(View.GONE);
-                        viewHolder.cvProductCounter.setVisibility(View.VISIBLE);
+        if (currentUser != null) {
+            user_id = currentUser.getUid();
+
+            mDatabase.child("cart").child(user_id).child(products.getProduct_key()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        boolean isVisible = (boolean) dataSnapshot.child("visibility").getValue();
+                        itemCount = Integer.parseInt(dataSnapshot.child("product_item_count").getValue().toString());
+                        if (isVisible) {
+                            viewHolder.bProductAddToCart.setVisibility(View.GONE);
+                            viewHolder.cvProductCounter.setVisibility(View.VISIBLE);
+                        } else {
+                            viewHolder.bProductAddToCart.setVisibility(View.VISIBLE);
+                            viewHolder.cvProductCounter.setVisibility(View.GONE);
+                        }
                     } else {
                         viewHolder.bProductAddToCart.setVisibility(View.VISIBLE);
                         viewHolder.cvProductCounter.setVisibility(View.GONE);
                     }
-                } else {
-                    viewHolder.bProductAddToCart.setVisibility(View.VISIBLE);
-                    viewHolder.cvProductCounter.setVisibility(View.GONE);
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
 
         Picasso.get().load(products.getProduct_image()).into(viewHolder.productIV, new Callback() {
             @Override
@@ -106,12 +111,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
             }
         });
+
         viewHolder.tvProductName.setText(products.getProduct_name());
         viewHolder.tvProductPrice.setText("₹" + products.getProduct_price() + " | " + products.getProduct_quantity() + "/" + products.getProduct_weight_unit().toLowerCase());
         viewHolder.tvProductDesc.setText(products.getProduct_description());
         viewHolder.tvSellerName.setText("by " + products.getCompany_name());
-
-
 
         viewHolder.productcv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,16 +163,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
             }
         });
 
-        viewHolder.bProductAddToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentUser == null) {
-
-                }
-                saveProductToCart(viewHolder, products);
-            }
-        });
-
         viewHolder.ibProductMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,6 +185,18 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
                 int total_price = Integer.parseInt(products.getProduct_price())*itemCount;
                 mDatabase.child("cart").child(currentUser.getUid()).child(products.getProduct_key()).child("total_product_price").setValue(String.valueOf(total_price));
                 mDatabase.child("cart").child(currentUser.getUid()).child(products.getProduct_key()).child("product_item_count").setValue(String.valueOf(itemCount));
+            }
+        });
+
+        viewHolder.bProductAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser == null) {
+
+                } else {
+                    saveProductToCart(viewHolder, products);
+                }
+
             }
         });
     }

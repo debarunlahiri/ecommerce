@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.debarunlahiri.dinmart.activity.AboutActivity;
+import com.debarunlahiri.dinmart.activity.EditUserInfoActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

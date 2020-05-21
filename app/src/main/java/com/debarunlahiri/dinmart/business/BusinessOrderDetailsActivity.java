@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.debarunlahiri.dinmart.Cart;
+import com.debarunlahiri.dinmart.model.Cart;
 import com.debarunlahiri.dinmart.next.R;
 import com.debarunlahiri.dinmart.utils.Variables;
 import com.google.firebase.auth.FirebaseAuth;

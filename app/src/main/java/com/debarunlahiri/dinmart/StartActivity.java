@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.VideoView;
 
+import com.debarunlahiri.dinmart.activity.LoginActivity;
 import com.debarunlahiri.dinmart.next.R;
 
 public class StartActivity extends AppCompatActivity {
@@ -51,14 +52,6 @@ public class StartActivity extends AppCompatActivity {
                 Intent loginIntent = new Intent(StartActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
 
-            }
-        });
-
-        button9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(StartActivity.this, RegisterActivity.class);
-                startActivity(registerIntent);
             }
         });
 

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.debarunlahiri.dinmart.Cart;
+import com.debarunlahiri.dinmart.model.Cart;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

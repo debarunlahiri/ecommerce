@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.debarunlahiri.dinmart.AboutActivity;
+import com.debarunlahiri.dinmart.activity.AboutActivity;
 import com.debarunlahiri.dinmart.AddProductActivity;
-import com.debarunlahiri.dinmart.EditUserInfoActivity;
+import com.debarunlahiri.dinmart.activity.EditUserInfoActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.debarunlahiri.dinmart.StartActivity;
 import com.debarunlahiri.dinmart.business.BusinessViewAllOrdersActivity;
@@ -35,7 +35,7 @@ public class SettingFragment extends Fragment {
     private Toolbar settingstoolbar;
 
     private TextView tvSettingsLogout, tvSettingsCreateB, tvSettingsBAP, tvSettingsECI, textView15, textView11, textView55, tvSettingsVAP;
-    private CardView cvSettingsBusiness;
+    private CardView cvSettingsBusiness, cvSettingsUser;
     private TextView tvViewOrders;
 
     private FirebaseAuth mAuth;
@@ -75,15 +75,18 @@ public class SettingFragment extends Fragment {
         tvSettingsVAP = view.findViewById(R.id.tvSettingsVAP);
         cvSettingsBusiness = view.findViewById(R.id.cvSettingsBusiness);
         tvViewOrders = view.findViewById(R.id.tvViewOrders);
+        cvSettingsUser = view.findViewById(R.id.cvSettingsUser);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
-            sendToLogin();
+            cvSettingsBusiness.setVisibility(View.GONE);
+            cvSettingsUser.setVisibility(View.GONE);
         } else {
             user_id = currentUser.getUid();
+            cvSettingsUser.setVisibility(View.VISIBLE);
             mDatabase.child("admin").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -101,49 +104,49 @@ public class SettingFragment extends Fragment {
 
                 }
             });
-
-            tvSettingsBAP.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addProductIntent = new Intent(getActivity(), AddProductActivity.class);
-                    startActivity(addProductIntent);
-                }
-            });
-            textView15.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent aboutIntent = new Intent(getActivity(), AboutActivity.class);
-                    startActivity(aboutIntent);
-                }
-            });
-
-            textView11.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addProductIntent = new Intent(getActivity(), EditUserInfoActivity.class);
-                    startActivity(addProductIntent);
-                }
-            });
-
-            tvViewOrders.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addProductIntent = new Intent(getActivity(), BusinessViewAllOrdersActivity.class);
-                    startActivity(addProductIntent);
-                }
-            });
-
-            tvSettingsLogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mAuth.signOut();
-                    Intent logoutIntent = new Intent(getActivity(), StartActivity.class);
-                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(logoutIntent);
-                    getActivity().finish();
-                }
-            });
         }
+
+        tvSettingsBAP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addProductIntent = new Intent(getActivity(), AddProductActivity.class);
+                startActivity(addProductIntent);
+            }
+        });
+        textView15.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent aboutIntent = new Intent(getActivity(), AboutActivity.class);
+                startActivity(aboutIntent);
+            }
+        });
+
+        textView11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addProductIntent = new Intent(getActivity(), EditUserInfoActivity.class);
+                startActivity(addProductIntent);
+            }
+        });
+
+        tvViewOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addProductIntent = new Intent(getActivity(), BusinessViewAllOrdersActivity.class);
+                startActivity(addProductIntent);
+            }
+        });
+
+        tvSettingsLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent logoutIntent = new Intent(getActivity(), StartActivity.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(logoutIntent);
+                getActivity().finish();
+            }
+        });
     }
 
     private void sendToLogin() {

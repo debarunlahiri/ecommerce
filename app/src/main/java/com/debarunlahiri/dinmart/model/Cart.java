@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.activity;
 
 import android.content.Intent;
 import androidx.annotation.NonNull;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.MainActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 public class AddUserDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar3;
-    private EditText etAddName, etAddPhone, etAddress;
+    private EditText etAddress;
     private Button savebtn;
 
     private DatabaseReference mDatabase;
@@ -44,8 +45,6 @@ public class AddUserDetailsActivity extends AppCompatActivity {
         toolbar3.setTitle("Add details");
         toolbar3.setTitleTextColor(Color.WHITE);
 
-        etAddName = findViewById(R.id.etAddName);
-        etAddPhone = findViewById(R.id.etAddPhone);
         etAddress = findViewById(R.id.etAddress);
         savebtn = findViewById(R.id.savebtn);
 
@@ -103,7 +102,7 @@ public class AddUserDetailsActivity extends AppCompatActivity {
     }
 
     private void sendToMain() {
-        Intent registerIntent = new Intent(AddUserDetailsActivity.this, RegisterActivity.class);
+        Intent registerIntent = new Intent(AddUserDetailsActivity.this, MainActivity.class);
         startActivity(registerIntent);
         finish();
     }

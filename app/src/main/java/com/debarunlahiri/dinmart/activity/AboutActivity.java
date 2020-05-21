@@ -1,16 +1,16 @@
-package com.debarunlahiri.dinmart;
+package com.debarunlahiri.dinmart.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.debarunlahiri.dinmart.next.BuildConfig;
 import com.debarunlahiri.dinmart.next.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +25,7 @@ public class AboutActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference mDatabase;
 
-    private TextView tvUserId, tvPrivacyPolicy;
+    private TextView tvUserId, tvPrivacyPolicy, tvAboutAppVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +47,25 @@ public class AboutActivity extends AppCompatActivity {
 
         tvUserId = findViewById(R.id.tvUserId);
         tvPrivacyPolicy = findViewById(R.id.tvPrivacyPolicy);
+        tvAboutAppVersion = findViewById(R.id.tvAboutAppVersion);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        tvUserId.setText(currentUser.getUid());
+        if (currentUser == null) {
+            tvUserId.setVisibility(View.GONE);
+        } else {
+            tvUserId.setText(currentUser.getUid());
 
+        }
+
+        tvAboutAppVersion.setText("v" + BuildConfig.VERSION_NAME);
         tvPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AboutActivity.this, PrivacyPolicyActivity.class));
             }
         });
-
-        //GaussianBlur.with(getApplicationContext()).size(100).radius(5).put(R.drawable.aboutbg, imageView12);
     }
 }

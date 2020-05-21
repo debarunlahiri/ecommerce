@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background"
-    tools:context="com.debarunlahiri.dinmart.ProductActivity">
+    tools:context="com.debarunlahiri.dinmart.activity.ProductActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar5"
