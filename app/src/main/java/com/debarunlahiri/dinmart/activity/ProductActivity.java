@@ -68,6 +68,7 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
 
     private Spinner spWeightUnit;
     private int itemCount = 1;
+    Products products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,124 +118,94 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         spWeightUnit.setOnItemSelectedListener(this);
 
         tvProductCount.setText(String.valueOf(itemCount));
-
         cvProductCounter.setVisibility(View.GONE);
-        if (currentUser == null) {
-//            sendToLogin();
-        } else {
-            if (b != null) {
-                getUserDetails();
-                mDatabase.child("products").child(product_key).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Products products = dataSnapshot.getValue(Products.class);
-                        product_description = dataSnapshot.child("product_description").getValue().toString();
-                        product_name = dataSnapshot.child("product_name").getValue().toString();
-                        product_price = dataSnapshot.child("product_price").getValue().toString();
-                        product_image = dataSnapshot.child("product_image").getValue().toString();
-                        product_image = dataSnapshot.child("product_image").getValue().toString();
-                        product_weight_unit = dataSnapshot.child("product_weight_unit").getValue().toString();
-                        product_quantity = dataSnapshot.child("product_quantity").getValue().toString();
 
-                        Picasso.get().load(product_image).into(productIV);
-                        toolbar5.setTitle(product_name);
-                        tvPName.setText(product_name);
-                        tvSName.setText("by " + "DIN Mart");
-                        tvPPrice.setText("₹" + product_price + " | " + products.getProduct_quantity() + "/" + product_weight_unit.toLowerCase());
-                        tvPDesc.setText(product_description);
+        mDatabase.child("products").child(product_key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                products = dataSnapshot.getValue(Products.class);
+                product_description = dataSnapshot.child("product_description").getValue().toString();
+                product_name = dataSnapshot.child("product_name").getValue().toString();
+                product_price = dataSnapshot.child("product_price").getValue().toString();
+                product_image = dataSnapshot.child("product_image").getValue().toString();
+                product_image = dataSnapshot.child("product_image").getValue().toString();
+                product_weight_unit = dataSnapshot.child("product_weight_unit").getValue().toString();
+                product_quantity = dataSnapshot.child("product_quantity").getValue().toString();
 
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                cvProductCounter.setVisibility(View.VISIBLE);
-                                saveProductToCart();
-                            }
-                        });
-
-                        ibProductMinus.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (itemCount >= 1) {
-                                    itemCount = Integer.parseInt(tvProductCount.getText().toString());
-                                    tvProductCount.setText(String.valueOf(--itemCount));
-                                    int total_price = Integer.parseInt(product_price)*itemCount;
-                                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
-                                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
-                                }
-
-                            }
-                        });
-
-                        ibProductPlus.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                itemCount = Integer.parseInt(tvProductCount.getText().toString());
-                                tvProductCount.setText(String.valueOf(++itemCount));
-                                int total_price = Integer.parseInt(product_price)*itemCount;
-                                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
-                                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
-                            }
-                        });
-
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (currentUser != null) {
-                                    saveProductToCart();
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-
-            } else {
-                sendToMain();
+                Picasso.get().load(product_image).into(productIV);
+                toolbar5.setTitle(product_name);
+                tvPName.setText(product_name);
+                tvSName.setText("by " + "DIN Mart");
+                tvPPrice.setText("₹" + product_price + " | " + product_quantity + "/" + product_weight_unit.toLowerCase());
+                tvPDesc.setText(product_description);
             }
-        }
 
-        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ibProductMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent productIntent = new Intent(ProductActivity.this, AddDeliveryDetails.class);
-                //productIntent.putExtra("product_key", );
-                productIntent.putExtra("product_name", product_name);
-                productIntent.putExtra("product_price", product_price);
-                productIntent.putExtra("product_image", product_image);
-                productIntent.putExtra("product_description", product_description);
-                productIntent.putExtra("seller_name", "DIN Mart");
-                productIntent.putExtra("from_cart", "no");
-                productIntent.putExtra("order_status", "pending");
-                productIntent.putExtra("order_weight", etUnit.getText().toString());
-                productIntent.putExtra("order_unit", etUnit.getText().toString());
-                startActivity(productIntent);
+                if (itemCount >= 1) {
+                    itemCount = Integer.parseInt(tvProductCount.getText().toString());
+                    tvProductCount.setText(String.valueOf(--itemCount));
+                    int total_price = Integer.parseInt(product_price)*itemCount;
+                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
+                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
+                }
+
+            }
+        });
+
+        ibProductPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemCount = Integer.parseInt(tvProductCount.getText().toString());
+                tvProductCount.setText(String.valueOf(++itemCount));
+                int total_price = Integer.parseInt(product_price)*itemCount;
+                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
+                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser == null) {
+                    Toast.makeText(getApplicationContext(), "User login required", Toast.LENGTH_LONG).show();
+                    Intent loginIntent = new Intent(ProductActivity.this, CardLoginActivity.class);
+                    loginIntent.putExtra("product_key", product_key);
+                    startActivity(loginIntent);
+
+                } else {
+                    cvProductCounter.setVisibility(View.VISIBLE);
+                    HashMap<String, Object> dataMap = new HashMap<>();
+                    dataMap.put("product_key", products.getProduct_key());
+                    dataMap.put("product_item_count", String.valueOf(itemCount));
+                    dataMap.put("product_price", products.getProduct_price());
+                    dataMap.put("product_quantity", products.getProduct_quantity());
+                    dataMap.put("product_weight_unit", products.getProduct_weight_unit());
+                    dataMap.put("user_id", user_id);
+                    dataMap.put("visibility", true);
+                    dataMap.put("total_product_price", "0");
+                    mDatabase.child("cart").child(user_id).child(product_key).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(mContext, "Product added successfully to cart", Toast.LENGTH_LONG).show();
+                            button.setVisibility(View.GONE);
+                            cvProductCounter.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
             }
         });
     }
 
     private void saveProductToCart() {
-        HashMap<String, Object> dataMap = new HashMap<>();
-        dataMap.put("product_key", product_key);
-        dataMap.put("product_item_count", String.valueOf(itemCount));
-        dataMap.put("product_price", product_price);
-        dataMap.put("product_quantity", product_quantity);
-        dataMap.put("product_weight_unit", product_weight_unit);
-        dataMap.put("user_id", user_id);
-        dataMap.put("visibility", true);
-        dataMap.put("total_product_price", "0");
-        mDatabase.child("cart").child(user_id).child(product_key).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(mContext, "Product added successfully to cart", Toast.LENGTH_LONG).show();
-                button.setVisibility(View.GONE);
-                cvProductCounter.setVisibility(View.VISIBLE);
-            }
-        });
+
     }
 
     private void getUserDetails() {

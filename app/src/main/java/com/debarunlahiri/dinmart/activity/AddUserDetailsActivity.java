@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class AddUserDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar3;
-    private EditText etAddress;
+    private EditText etAddress, etLEmail;
     private Button savebtn;
 
     private DatabaseReference mDatabase;
@@ -46,6 +46,7 @@ public class AddUserDetailsActivity extends AppCompatActivity {
         toolbar3.setTitleTextColor(Color.WHITE);
 
         etAddress = findViewById(R.id.etAddress);
+        etLEmail = findViewById(R.id.etLEmail);
         savebtn = findViewById(R.id.savebtn);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -67,8 +68,11 @@ public class AddUserDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     String address = etAddress.getText().toString();
+                    String name = etLEmail.getText().toString();
 
-                    if (address.isEmpty()) {
+                    if (name.isEmpty()) {
+                        etLEmail.setError("Please enter your name");
+                    } else if (address.isEmpty()) {
                         etAddress.setError("Please enter your address");
                     } else {
                         registerCompany();

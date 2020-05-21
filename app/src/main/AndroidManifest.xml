@@ -17,14 +17,15 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.debarunlahiri.dinmart.activity.PrivacyPolicyActivity"></activity>
+        <activity android:name="com.debarunlahiri.dinmart.activity.CardLoginActivity"
+            android:theme="@style/Theme.Transparent"></activity>
+        <activity android:name="com.debarunlahiri.dinmart.activity.PrivacyPolicyActivity" />
         <activity android:name="com.debarunlahiri.dinmart.activity.FinalPriceActivity" />
         <activity android:name="com.debarunlahiri.dinmart.business.BusinessOrderDetailsActivity" />
         <activity android:name="com.debarunlahiri.dinmart.business.BusinessViewAllOrdersActivity" />
         <activity android:name="com.debarunlahiri.dinmart.BusinessOrdersActivity" />
         <activity android:name="com.debarunlahiri.dinmart.activity.HomeActivity" />
         <activity android:name="com.debarunlahiri.dinmart.activity.OtpActivity" />
-        <activity android:name="com.debarunlahiri.dinmart.SignInActivity" />
         <activity android:name="com.debarunlahiri.dinmart.VAPActivity" />
         <activity android:name="com.debarunlahiri.dinmart.activity.AddDeliveryDetails" />
         <activity android:name="com.debarunlahiri.dinmart.activity.CartBuyActivity" />
@@ -49,9 +50,9 @@
         <activity android:name="com.debarunlahiri.dinmart.activity.AboutActivity" />
         <activity android:name="com.debarunlahiri.dinmart.activity.EditUserInfoActivity" />
         <activity android:name="com.debarunlahiri.dinmart.EditCompanyInfoActivity" />
-
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>

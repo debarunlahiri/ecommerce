@@ -48,12 +48,14 @@ public class OtpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
-    private String name, phone_number;
+    private String name, phone_number, revert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
+
+        revert = getIntent().getStringExtra("revert");
 
         otptoolbar = findViewById(R.id.otptoolbar);
         otptoolbar.setTitle("OTP");
@@ -190,17 +192,13 @@ public class OtpActivity extends AppCompatActivity {
 
                             FirebaseUser user = task.getResult().getUser();
                             Toast.makeText(getApplicationContext(), "Successfully Verified!", Toast.LENGTH_LONG).show();
-                            mDatabase.child("users");
-                            mDatabase.child(user.getUid());
-                            mDatabase.addValueEventListener(new ValueEventListener() {
+                            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        if (dataSnapshot.child("address").exists()) {
-                                            sendToMain();
-                                        } else {
-                                            sendToAddDetails();
-                                        }
+                                    if (dataSnapshot.child("name").exists() && dataSnapshot.child("address").exists()) {
+                                        Intent mainIntent = new Intent(OtpActivity.this, MainActivity.class);
+                                        startActivity(mainIntent);
+                                        finish();
                                     } else {
                                         sendToAddDetails();
                                     }

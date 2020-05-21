@@ -30,10 +30,14 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
+    private String product_key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        product_key = getIntent().getStringExtra("product_key");
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
@@ -71,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent otpIntent = new Intent(LoginActivity.this, OtpActivity.class);
                     otpIntent.putExtra("name", name);
                     otpIntent.putExtra("phone_number", phone);
+                    otpIntent.putExtra("product_key", "product_key");
                     startActivity(otpIntent);
                     progressBar.setVisibility(View.INVISIBLE);
                 }
