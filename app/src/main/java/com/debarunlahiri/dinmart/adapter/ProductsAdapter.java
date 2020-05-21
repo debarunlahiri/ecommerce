@@ -112,8 +112,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
             }
         });
 
-        //Hola mola
-
         viewHolder.tvProductName.setText(products.getProduct_name());
         viewHolder.tvProductPrice.setText("₹" + products.getProduct_price() + " | " + products.getProduct_quantity() + "/" + products.getProduct_weight_unit().toLowerCase());
         viewHolder.tvProductDesc.setText(products.getProduct_description());
