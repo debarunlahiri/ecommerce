@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.MainActivity;
 import com.debarunlahiri.dinmart.activity.AboutActivity;
 import com.debarunlahiri.dinmart.AddProductActivity;
 import com.debarunlahiri.dinmart.activity.EditUserInfoActivity;
@@ -85,6 +87,7 @@ public class SettingFragment extends Fragment {
             cvSettingsBusiness.setVisibility(View.GONE);
             cvSettingsUser.setVisibility(View.GONE);
         } else {
+            cvSettingsBusiness.setVisibility(View.GONE);
             user_id = currentUser.getUid();
             cvSettingsUser.setVisibility(View.VISIBLE);
             mDatabase.child("admin").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -96,6 +99,8 @@ public class SettingFragment extends Fragment {
                         } else {
                             cvSettingsBusiness.setVisibility(View.GONE);
                         }
+                    } else {
+                        cvSettingsBusiness.setVisibility(View.GONE);
                     }
                 }
 
@@ -141,10 +146,11 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                Intent logoutIntent = new Intent(getActivity(), StartActivity.class);
+                Intent logoutIntent = new Intent(getActivity(), MainActivity.class);
                 logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoutIntent);
                 getActivity().finish();
+                Toast.makeText(getActivity(), "Successfully logged out", Toast.LENGTH_LONG).show();
             }
         });
     }

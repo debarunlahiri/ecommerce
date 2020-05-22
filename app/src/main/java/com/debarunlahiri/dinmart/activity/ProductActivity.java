@@ -24,6 +24,7 @@ import com.debarunlahiri.dinmart.MainActivity;
 import com.debarunlahiri.dinmart.adapter.ProductsAdapter;
 import com.debarunlahiri.dinmart.model.Products;
 import com.debarunlahiri.dinmart.next.R;
+import com.debarunlahiri.dinmart.utils.Variables;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -153,8 +154,8 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
                     itemCount = Integer.parseInt(tvProductCount.getText().toString());
                     tvProductCount.setText(String.valueOf(--itemCount));
                     int total_price = Integer.parseInt(product_price)*itemCount;
-                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
-                    mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
+                    mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
+                    mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
                 }
 
             }
@@ -166,15 +167,15 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
                 itemCount = Integer.parseInt(tvProductCount.getText().toString());
                 tvProductCount.setText(String.valueOf(++itemCount));
                 int total_price = Integer.parseInt(product_price)*itemCount;
-                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
-                mDatabase.child("cart").child(currentUser.getUid()).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
+                mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
+                mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
             }
         });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUser == null) {
+                if (currentUser == null && Variables.global_user_id.equals("")) {
                     Toast.makeText(getApplicationContext(), "User login required", Toast.LENGTH_LONG).show();
                     Intent loginIntent = new Intent(ProductActivity.this, CardLoginActivity.class);
                     loginIntent.putExtra("product_key", product_key);

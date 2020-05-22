@@ -102,8 +102,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
                 if (total_product_price.equals("0")) {
                     viewHolder.product_price.setText("₹" + product_price + " " + product_quantity + "/" + product_weight_unit);
+                    viewHolder.tvCartPrice.setText("₹" + product_price);
                 } else {
-                    viewHolder.product_price.setText("₹" + total_product_price + " " + product_quantity + "/" + product_weight_unit);
+                    viewHolder.product_price.setText("₹" + product_price + " " + product_quantity + "/" + product_weight_unit);
+                    viewHolder.tvCartPrice.setText("₹" + total_product_price);
                 }
 
             }
@@ -198,7 +200,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView10;
-        private TextView product_name, product_price, product_description, seller_name, tvProductCount;
+        private TextView product_name, product_price, product_description, seller_name, tvProductCount, tvCartPrice;
         private CardView productcv, cvRemoveItem;
         private TextView cartDelbtn;
         private ProgressBar progressBar3;
@@ -219,6 +221,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             ibProductPlus = itemView.findViewById(R.id.ibProductPlus);
             tvProductCount = itemView.findViewById(R.id.tvProductCount);
             cvRemoveItem = itemView.findViewById(R.id.cvRemoveItem);
+            tvCartPrice = itemView.findViewById(R.id.tvCartPrice);
 
         }
     }

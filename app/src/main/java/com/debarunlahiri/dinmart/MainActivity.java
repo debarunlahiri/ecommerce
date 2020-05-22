@@ -16,6 +16,7 @@ import com.debarunlahiri.dinmart.activity.EditUserInfoActivity;
 import com.debarunlahiri.dinmart.activity.HomeActivity;
 import com.debarunlahiri.dinmart.activity.LoginActivity;
 import com.debarunlahiri.dinmart.next.R;
+import com.debarunlahiri.dinmart.utils.Variables;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -72,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         sendToHome();
+
+        if (currentUser != null) {
+            user_id = currentUser.getUid();
+            Variables.global_user_id = user_id;
+        }
 
         //GaussianBlur.with(getApplicationContext()).size(100).radius(5).put(R.drawable.mainbg, imageView16);
 

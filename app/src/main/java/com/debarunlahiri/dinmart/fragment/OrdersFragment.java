@@ -90,8 +90,10 @@ public class OrdersFragment extends Fragment {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     BusinessOrders businessOrders = dataSnapshot.getValue(BusinessOrders.class);
-                    businessOrdersList.add(businessOrders);
-                    viewAllProductsAdapter.notifyDataSetChanged();
+                    if (businessOrders.getUser_id().equals(user_id)) {
+                        businessOrdersList.add(businessOrders);
+                        viewAllProductsAdapter.notifyDataSetChanged();
+                    }
                 }
 
                 @Override

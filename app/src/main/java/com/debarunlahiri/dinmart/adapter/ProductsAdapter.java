@@ -17,9 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.debarunlahiri.dinmart.activity.AddDeliveryDetails;
+import com.debarunlahiri.dinmart.activity.CardLoginActivity;
 import com.debarunlahiri.dinmart.activity.ProductActivity;
 import com.debarunlahiri.dinmart.model.Products;
 import com.debarunlahiri.dinmart.next.R;
+import com.debarunlahiri.dinmart.utils.Variables;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,8 +75,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
         if (currentUser != null) {
             user_id = currentUser.getUid();
-
-            mDatabase.child("cart").child(user_id).child(products.getProduct_key()).addValueEventListener(new ValueEventListener() {
+            Variables.global_user_id = user_id;
+            mDatabase.child("cart").child(Variables.global_user_id).child(products.getProduct_key()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -152,7 +154,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
                 dataMap.put("product_image", products.getProduct_image());
                 dataMap.put("seller_name", products.getCompany_name());
                 dataMap.put("product_description", products.getProduct_description());
-                mDatabase.child("cart").child(user_id).child(products.getProduct_key()).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                mDatabase.child("cart").child(Variables.global_user_id).child(products.getProduct_key()).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -170,8 +172,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
                     itemCount = Integer.parseInt(viewHolder.tvProductCount.getText().toString());
                     viewHolder.tvProductCount.setText(String.valueOf(--itemCount));
                     int total_price = Integer.parseInt(products.getProduct_price())*itemCount;
-                    mDatabase.child("cart").child(currentUser.getUid()).child(products.getProduct_key()).child("total_product_price").setValue(String.valueOf(total_price));
-                    mDatabase.child("cart").child(currentUser.getUid()).child(products.getProduct_key()).child("product_item_count").setValue(String.valueOf(itemCount));
+                    mDatabase.child("cart").child(Variables.global_user_id).child(products.getProduct_key()).child("total_product_price").setValue(String.valueOf(total_price));
+                    mDatabase.child("cart").child(Variables.global_user_id).child(products.getProduct_key()).child("product_item_count").setValue(String.valueOf(itemCount));
                 }
 
             }
@@ -183,20 +185,20 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
                 itemCount = Integer.parseInt(viewHolder.tvProductCount.getText().toString());
                 viewHolder.tvProductCount.setText(String.valueOf(++itemCount));
                 int total_price = Integer.parseInt(products.getProduct_price())*itemCount;
-                mDatabase.child("cart").child(currentUser.getUid()).child(products.getProduct_key()).child("total_product_price").setValue(String.valueOf(total_price));
-                mDatabase.child("cart").child(currentUser.getUid()).child(products.getProduct_key()).child("product_item_count").setValue(String.valueOf(itemCount));
+                mDatabase.child("cart").child(Variables.global_user_id).child(products.getProduct_key()).child("total_product_price").setValue(String.valueOf(total_price));
+                mDatabase.child("cart").child(Variables.global_user_id).child(products.getProduct_key()).child("product_item_count").setValue(String.valueOf(itemCount));
             }
         });
 
         viewHolder.bProductAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUser == null) {
-
+                if (currentUser == null && Variables.global_user_id.equals("")) {
+                    Intent loginIntent = new Intent(mContext, CardLoginActivity.class);
+                    mContext.startActivity(loginIntent);
                 } else {
                     saveProductToCart(viewHolder, products);
                 }
-
             }
         });
     }
@@ -208,10 +210,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         dataMap.put("product_price", products.getProduct_price());
         dataMap.put("product_quantity", products.getProduct_quantity());
         dataMap.put("product_weight_unit", products.getProduct_weight_unit());
-        dataMap.put("user_id", user_id);
+        dataMap.put("user_id", Variables.global_user_id);
         dataMap.put("visibility", true);
         dataMap.put("total_product_price", "0");
-        mDatabase.child("cart").child(user_id).child(products.getProduct_key()).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDatabase.child("cart").child(Variables.global_user_id).child(products.getProduct_key()).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(mContext, "Product added successfully to cart", Toast.LENGTH_LONG).show();
@@ -229,7 +231,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView productIV;
-        private TextView tvProductName, tvProductPrice, tvProductDesc, tvSellerName, tvProductCount;
+        private TextView tvProductName, tvProductPrice, tvProductDesc, tvSellerName, tvProductCount, tvCartPrice;
         private CardView productcv, cvProductCounter;
         private ProgressBar progressBar3;
         private Button button14, button15, bProductAddToCart;
@@ -251,6 +253,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
             ibProductMinus = itemView.findViewById(R.id.ibProductMinus);
             ibProductPlus = itemView.findViewById(R.id.ibProductPlus);
             tvProductCount = itemView.findViewById(R.id.tvProductCount);
+            tvCartPrice = itemView.findViewById(R.id.tvCartPrice);
         }
     }
 }
