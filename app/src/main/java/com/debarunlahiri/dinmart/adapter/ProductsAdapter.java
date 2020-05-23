@@ -102,6 +102,36 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
             });
         }
 
+        if (currentUser != null && !Variables.global_user_id.equals("")) {
+            mDatabase.child("cart").child(currentUser.getUid()).child(products.getProduct_key()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String product_price = dataSnapshot.child("product_price").getValue().toString();
+                        String product_quantity = dataSnapshot.child("product_quantity").getValue().toString();
+                        String product_weight_unit = dataSnapshot.child("product_weight_unit").getValue().toString();
+                        String total_product_price = dataSnapshot.child("total_product_price").getValue().toString();
+                        itemCount = Integer.parseInt(dataSnapshot.child("product_item_count").getValue().toString());
+
+                        viewHolder.tvProductCount.setText(String.valueOf(itemCount));
+
+//                        if (total_product_price.equals("0")) {
+//                            viewHolder.product_price.setText("₹" + product_price + " / " + product_quantity + " " + product_weight_unit);
+//                            viewHolder.tvCartPrice.setText("₹" + product_price);
+//                        } else {
+//                            viewHolder.product_price.setText("₹" + product_price + " / " + product_quantity + " " + product_weight_unit);
+//                            viewHolder.tvCartPrice.setText("₹" + total_product_price);
+//                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
         Picasso.get().load(products.getProduct_image()).into(viewHolder.productIV, new Callback() {
             @Override
             public void onSuccess() {

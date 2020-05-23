@@ -3,24 +3,35 @@ package com.debarunlahiri.dinmart.activity;
 import android.content.Intent;
 import android.graphics.Color;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.debarunlahiri.dinmart.next.R;
+import com.debarunlahiri.dinmart.utils.Variables;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddDeliveryDetails extends AppCompatActivity {
 
     private Toolbar toolbar14;
     private Button button10;
     private EditText etADAddress, etADName;
+    private TextView tvWordsCounter;
 
     private DatabaseReference mDatabase;
     private FirebaseUser currentUser;
@@ -57,12 +68,6 @@ public class AddDeliveryDetails extends AppCompatActivity {
             total_product_count = bundle.get("total_product_count").toString();
         }
 
-
-
-
-
-
-
         toolbar14 = findViewById(R.id.toolbar14);
         toolbar14.setTitle("Add Details");
         toolbar14.setTitleTextColor(Color.WHITE);
@@ -80,14 +85,37 @@ public class AddDeliveryDetails extends AppCompatActivity {
         etADAddress = findViewById(R.id.etADAddress);
         etADName = findViewById(R.id.etADName);
         button10 = findViewById(R.id.button10);
+        tvWordsCounter = findViewById(R.id.tvWordsCounter);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
-            user_id = currentUser.getUid();
+            Toast.makeText(getApplicationContext(), "Please login again", Toast.LENGTH_LONG).show();
+            Intent loginIntent = new Intent(AddDeliveryDetails.this, LoginActivity.class);
+            startActivity(loginIntent);
+            finish();
         } else {
+            mDatabase.child("users").child(Variables.global_user_id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String name = dataSnapshot.child("name").getValue().toString();
+                        String address = dataSnapshot.child("address").getValue().toString();
+
+                        etADAddress.setText(address);
+                        etADName.setText(name);
+
+                        button10.setText("Deliver to this address");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             if (from_cart.equals("yes")) {
                 button10.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -99,6 +127,8 @@ public class AddDeliveryDetails extends AppCompatActivity {
                             etADName.setError("Please enter name");
                         } else if (address.isEmpty()) {
                             etADAddress.setError("Please enter address");
+                        } else if (address.length() < 80) {
+                            Toast.makeText(getApplicationContext(), "Please enter detail address. Minimum 80 characters.", Toast.LENGTH_LONG).show();
                         } else {
                             Intent cartBuyIntent = new Intent(AddDeliveryDetails.this, CartBuyActivity.class);
                             cartBuyIntent.putExtra("total_product_count", String.valueOf(total_product_count));
@@ -139,6 +169,23 @@ public class AddDeliveryDetails extends AppCompatActivity {
                     }
                 });
             }
+
+            etADAddress.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    tvWordsCounter.setText(String.valueOf(s.length()) + " characters");
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
 
         }
 

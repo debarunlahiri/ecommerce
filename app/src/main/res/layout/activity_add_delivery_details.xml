@@ -9,6 +9,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorWhite"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar14"
@@ -44,13 +45,15 @@
             <EditText
                 android:id="@+id/etADName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:background="@drawable/edittext_border_bg"
                 android:ems="10"
-                android:hint="Enter name "
-                android:inputType="textPersonName|textCapWords" />
+                android:hint="Enter full name "
+                android:inputType="textPersonName|textCapWords"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/textView53"
@@ -71,9 +74,22 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:background="@drawable/edittext_border_bg"
                 android:ems="10"
-                android:hint="Enter address"
-                android:inputType="textMultiLine|textPersonName|textCapSentences" />
+                android:gravity="top|left"
+                android:hint="Enter full address"
+                android:inputType="textMultiLine|textPersonName|textCapSentences"
+                android:minLines="3"
+                android:padding="8dp" />
+
+            <TextView
+                android:id="@+id/tvWordsCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="0 characters"
+                android:textAlignment="textEnd"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button10"
@@ -95,7 +111,8 @@
                 android:padding="8dp"
                 android:text="Use other addresses"
                 android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"

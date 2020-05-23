@@ -121,6 +121,65 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         tvProductCount.setText(String.valueOf(itemCount));
         cvProductCounter.setVisibility(View.GONE);
 
+        if (currentUser != null) {
+            user_id = currentUser.getUid();
+            Variables.global_user_id = user_id;
+            mDatabase.child("cart").child(Variables.global_user_id).child(product_key).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        boolean isVisible = (boolean) dataSnapshot.child("visibility").getValue();
+                        itemCount = Integer.parseInt(dataSnapshot.child("product_item_count").getValue().toString());
+                        if (isVisible) {
+                            button.setVisibility(View.GONE);
+                            cvProductCounter.setVisibility(View.VISIBLE);
+                        } else {
+                            button.setVisibility(View.VISIBLE);
+                            cvProductCounter.setVisibility(View.GONE);
+                        }
+                    } else {
+                        button.setVisibility(View.VISIBLE);
+                        cvProductCounter.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        if (currentUser != null && !Variables.global_user_id.equals("")) {
+            mDatabase.child("cart").child(currentUser.getUid()).child(product_key).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+//                        String product_price = dataSnapshot.child("product_price").getValue().toString();
+//                        String product_quantity = dataSnapshot.child("product_quantity").getValue().toString();
+//                        String product_weight_unit = dataSnapshot.child("product_weight_unit").getValue().toString();
+//                        String total_product_price = dataSnapshot.child("total_product_price").getValue().toString();
+                        itemCount = Integer.parseInt(dataSnapshot.child("product_item_count").getValue().toString());
+
+                        tvProductCount.setText(String.valueOf(itemCount));
+
+//                        if (total_product_price.equals("0")) {
+//                            viewHolder.product_price.setText("₹" + product_price + " / " + product_quantity + " " + product_weight_unit);
+//                            viewHolder.tvCartPrice.setText("₹" + product_price);
+//                        } else {
+//                            viewHolder.product_price.setText("₹" + product_price + " / " + product_quantity + " " + product_weight_unit);
+//                            viewHolder.tvCartPrice.setText("₹" + total_product_price);
+//                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
         mDatabase.child("products").child(product_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -189,10 +248,10 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
                     dataMap.put("product_price", products.getProduct_price());
                     dataMap.put("product_quantity", products.getProduct_quantity());
                     dataMap.put("product_weight_unit", products.getProduct_weight_unit());
-                    dataMap.put("user_id", user_id);
+                    dataMap.put("user_id", Variables.global_user_id);
                     dataMap.put("visibility", true);
                     dataMap.put("total_product_price", "0");
-                    mDatabase.child("cart").child(user_id).child(product_key).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mDatabase.child("cart").child(Variables.global_user_id).child(product_key).updateChildren(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(mContext, "Product added successfully to cart", Toast.LENGTH_LONG).show();
@@ -211,7 +270,7 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
 
     private void getUserDetails() {
         user_id = currentUser.getUid();
-        mDatabase.child("users").child(user_id).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child(Variables.global_user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                email_id = dataSnapshot.child("email").getValue().toString();

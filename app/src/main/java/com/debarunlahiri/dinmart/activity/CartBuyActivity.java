@@ -126,7 +126,7 @@ public class CartBuyActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot da : dataSnapshot.getChildren())  {
-                            Cart cart = da.getValue(Cart.class);
+                            final Cart cart = da.getValue(Cart.class);
                             HashMap<String, Object> mCartDataMap = new HashMap<>();
                             mCartDataMap.put("product_key", cart.getProduct_key());
                             mCartDataMap.put("product_item_count", cart.getProduct_item_count());
@@ -139,6 +139,7 @@ public class CartBuyActivity extends AppCompatActivity {
                             mDatabase.child("orders").child(order_id).child("order_list").child(cart.getProduct_key()).setValue(mCartDataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    mDatabase.child("cart").child(cart.getUser_id()).removeValue();
                                     Intent mainIntent = new Intent(CartBuyActivity.this, MainActivity.class);
                                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(mainIntent);

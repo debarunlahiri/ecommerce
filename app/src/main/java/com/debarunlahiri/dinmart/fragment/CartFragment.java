@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.debarunlahiri.dinmart.model.Cart;
 import com.debarunlahiri.dinmart.adapter.CartAdapter;
@@ -116,24 +117,32 @@ public class CartFragment extends Fragment {
 
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    Cart cart = dataSnapshot.getValue(Cart.class);
-                    String key = dataSnapshot.getKey();
-                    int index = mKeys.indexOf(key);
-                    if (cart.getProduct_key().equals(key)) {
-                        if (!cart.isVisibility()) {
-                            cartList.remove(index);
-                            cartAdapter.notifyDataSetChanged();
-                        }
-                    }
-
-                    if (cartList.isEmpty()) {
-                        cvCartProceed.setVisibility(View.GONE);
-                    }
+//                    if (dataSnapshot.exists()) {
+//                        Cart cart = dataSnapshot.getValue(Cart.class);
+//                        String key = dataSnapshot.getKey();
+//                        int index = mKeys.indexOf(key);
+//                        if (cart.getProduct_key().equals(key)) {
+//                            if (!cart.isVisibility()) {
+//                                cartList.remove(index);
+//                                cartAdapter.notifyDataSetChanged();
+//                            }
+//                        }
+//
+//                        if (cartList.isEmpty()) {
+//                            cvCartProceed.setVisibility(View.GONE);
+//                        }
+//                    }
                 }
 
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                    String key = dataSnapshot.getKey();
+                    for (Cart cart : cartList) {
+                        if (cart.getProduct_key().equals(key)) {
+                            cartList.remove(cart);
+                            cartAdapter.notifyDataSetChanged();
+                        }
+                    }
                 }
 
                 @Override

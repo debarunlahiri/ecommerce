@@ -23,6 +23,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     dexOptions {
         javaMaxHeapSize "4g"
     }
@@ -59,4 +63,8 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
 
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.6.2'
 }
