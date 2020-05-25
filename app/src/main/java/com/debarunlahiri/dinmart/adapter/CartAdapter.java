@@ -136,7 +136,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         viewHolder.ibProductMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (itemCount != 0) {
+                if (itemCount > 1) {
                     itemCount = Integer.parseInt(viewHolder.tvProductCount.getText().toString());
                     viewHolder.tvProductCount.setText(String.valueOf(--itemCount));
                     int total_price = Integer.parseInt(cart.getProduct_price())*itemCount;

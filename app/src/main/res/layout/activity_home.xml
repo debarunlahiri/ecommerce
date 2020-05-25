@@ -7,7 +7,7 @@
     tools:context="com.debarunlahiri.dinmart.activity.HomeActivity">
 
     <FrameLayout
-        android:id="@+id/flHome"
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"

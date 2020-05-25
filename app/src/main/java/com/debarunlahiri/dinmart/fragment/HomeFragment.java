@@ -4,18 +4,25 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.debarunlahiri.dinmart.activity.HomeActivity;
 import com.debarunlahiri.dinmart.activity.ProductMainSubListActivity;
 import com.debarunlahiri.dinmart.next.R;
+import com.debarunlahiri.dinmart.utils.Variables;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -99,11 +106,14 @@ public class HomeFragment extends Fragment {
         });
 
         cvHomeSnacks.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 Intent productIntent = new Intent(getActivity(), ProductMainSubListActivity.class);
                 productIntent.putExtra("category", "Snacks");
                 startActivity(productIntent);
+//                Variables.product_category = "Snacks";
+//                getChildFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProductListFragment()).commit();
             }
         });
 

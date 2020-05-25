@@ -20,19 +20,26 @@ public class HomeActivity extends AppCompatActivity {
     private FrameLayout flHome;
     private BottomNavigationView bottomNavigationView;
 
-    private HomeFragment homeFragment;
-    private CartFragment cartFragment;
-    private OfferFragment offerFragment;
-    private OrdersFragment ordersFragment;
-    private SettingFragment settingFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        flHome = findViewById(R.id.flHome);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        flHome = findViewById(R.id.fragment_container);
+
+        setUpBottomNavMenu();
+
+
+    }
+
+    private void setUpBottomNavMenu() {
+        BottomNavigationView bottomNavigationView = bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        HomeFragment homeFragment;
+        CartFragment cartFragment;
+        OfferFragment offerFragment;
+        OrdersFragment ordersFragment;
+        SettingFragment settingFragment;
 
         homeFragment = new HomeFragment();
         cartFragment = new CartFragment();
@@ -40,36 +47,35 @@ public class HomeActivity extends AppCompatActivity {
         ordersFragment = new OrdersFragment();
         settingFragment = new SettingFragment();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.flHome, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.home_menu_list_item :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.flHome, new HomeFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                         return true;
 
                     case R.id.home_offer_menu_list_item :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.flHome, new OfferFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OfferFragment()).commit();
                         return true;
 
                     case R.id.home_cart_menu_list_item :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.flHome, new CartFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CartFragment()).commit();
                         return true;
 
                     case R.id.home_settings_menu_list_item :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.flHome, new SettingFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingFragment()).commit();
                         return true;
 
                     case R.id.home_orders_menu_list_item :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.flHome, new OrdersFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OrdersFragment()).commit();
                         return true;
 
                 }
                 return false;
             }
         });
-
     }
 }

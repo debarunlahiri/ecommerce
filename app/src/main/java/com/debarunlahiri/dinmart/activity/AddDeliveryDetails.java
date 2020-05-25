@@ -49,24 +49,26 @@ public class AddDeliveryDetails extends AppCompatActivity {
     private String product_image = "";
     private String product_category = "";
     private String from_cart;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_delivery_details);
 
-        Bundle bundle = getIntent().getExtras();
-        from_cart = bundle.get("from_cart").toString();
-        if (from_cart.equals("no")) {
-            product_name = bundle.get("product_name").toString();
-            product_price = bundle.get("product_price").toString();
-            product_description = bundle.get("product_description").toString();
-            seller_name = bundle.get("seller_name").toString();
-            product_image = bundle.get("product_image").toString();
-        } else if (from_cart.equals("yes")){
-            total_price = bundle.get("total_price").toString();
-            total_product_count = bundle.get("total_product_count").toString();
-        }
+//        Bundle bundle = getIntent().getExtras();
+//        from_cart = bundle.get("from_cart").toString();
+//        if (from_cart.equals("no")) {
+//            product_name = bundle.get("product_name").toString();
+//            product_price = bundle.get("product_price").toString();
+//            product_description = bundle.get("product_description").toString();
+//            seller_name = bundle.get("seller_name").toString();
+//            product_image = bundle.get("product_image").toString();
+//        } else if (from_cart.equals("yes")){
+//            total_price = bundle.get("total_price").toString();
+//            total_product_count = bundle.get("total_product_count").toString();
+//        }
+//        type = getIntent().getStringExtra("type");
 
         toolbar14 = findViewById(R.id.toolbar14);
         toolbar14.setTitle("Add Details");
@@ -91,103 +93,103 @@ public class AddDeliveryDetails extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        if (currentUser == null) {
-            Toast.makeText(getApplicationContext(), "Please login again", Toast.LENGTH_LONG).show();
-            Intent loginIntent = new Intent(AddDeliveryDetails.this, LoginActivity.class);
-            startActivity(loginIntent);
-            finish();
-        } else {
-            mDatabase.child("users").child(Variables.global_user_id).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String name = dataSnapshot.child("name").getValue().toString();
-                        String address = dataSnapshot.child("address").getValue().toString();
-
-                        etADAddress.setText(address);
-                        etADName.setText(name);
-
-                        button10.setText("Deliver to this address");
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-            if (from_cart.equals("yes")) {
-                button10.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = etADName.getText().toString();
-                        String address = etADAddress.getText().toString();
-
-                        if (name.isEmpty()) {
-                            etADName.setError("Please enter name");
-                        } else if (address.isEmpty()) {
-                            etADAddress.setError("Please enter address");
-                        } else if (address.length() < 80) {
-                            Toast.makeText(getApplicationContext(), "Please enter detail address. Minimum 80 characters.", Toast.LENGTH_LONG).show();
-                        } else {
-                            Intent cartBuyIntent = new Intent(AddDeliveryDetails.this, CartBuyActivity.class);
-                            cartBuyIntent.putExtra("total_product_count", String.valueOf(total_product_count));
-                            cartBuyIntent.putExtra("total_price", String.valueOf(total_price));
-                            cartBuyIntent.putExtra("name", name);
-                            cartBuyIntent.putExtra("address", address);
-                            startActivity(cartBuyIntent);
-                        }
-
-
-
-                    }
-                });
-            } else if (from_cart.equals("no")){
-                button10.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = etADName.getText().toString();
-                        String address = etADAddress.getText().toString();
-
-                        if (name.isEmpty()) {
-                            etADName.setError("Please enter name");
-                        } else if (address.isEmpty()) {
-                            etADAddress.setError("Please enter address");
-                        } else {
-//                            Intent productIntent = new Intent(AddDeliveryDetails.this, BuyActivity.class);
-//                            //productIntent.putExtra("product_key", );
-//                            productIntent.putExtra("product_name", product_name);
-//                            productIntent.putExtra("product_price", product_price);
-//                            productIntent.putExtra("product_image", product_image);
-//                            productIntent.putExtra("product_description", product_description);
-//                            productIntent.putExtra("seller_name", seller_name);
-//                            productIntent.putExtra("name", name);
-//                            productIntent.putExtra("address", address);
-//                            startActivity(productIntent);
-                        }
-
-                    }
-                });
-            }
-
-            etADAddress.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    tvWordsCounter.setText(String.valueOf(s.length()) + " characters");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-        }
+//        if (currentUser == null) {
+//            Toast.makeText(getApplicationContext(), "Please login again", Toast.LENGTH_LONG).show();
+//            Intent loginIntent = new Intent(AddDeliveryDetails.this, LoginActivity.class);
+//            startActivity(loginIntent);
+//            finish();
+//        } else {
+//            mDatabase.child("users").child(Variables.global_user_id).addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.exists()) {
+//                        String name = dataSnapshot.child("name").getValue().toString();
+//                        String address = dataSnapshot.child("address").getValue().toString();
+//
+//                        etADAddress.setText(address);
+//                        etADName.setText(name);
+//
+//                        button10.setText("Deliver to this address");
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            });
+//            if (from_cart.equals("yes")) {
+//                button10.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String name = etADName.getText().toString();
+//                        String address = etADAddress.getText().toString();
+//
+//                        if (name.isEmpty()) {
+//                            etADName.setError("Please enter name");
+//                        } else if (address.isEmpty()) {
+//                            etADAddress.setError("Please enter address");
+//                        } else if (address.length() < 80) {
+//                            Toast.makeText(getApplicationContext(), "Please enter detail address. Minimum 80 characters.", Toast.LENGTH_LONG).show();
+//                        } else {
+//                            Intent cartBuyIntent = new Intent(AddDeliveryDetails.this, CartBuyActivity.class);
+//                            cartBuyIntent.putExtra("total_product_count", String.valueOf(total_product_count));
+//                            cartBuyIntent.putExtra("total_price", String.valueOf(total_price));
+//                            cartBuyIntent.putExtra("name", name);
+//                            cartBuyIntent.putExtra("address", address);
+//                            startActivity(cartBuyIntent);
+//                        }
+//
+//
+//
+//                    }
+//                });
+//            } else if (from_cart.equals("no")){
+//                button10.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String name = etADName.getText().toString();
+//                        String address = etADAddress.getText().toString();
+//
+//                        if (name.isEmpty()) {
+//                            etADName.setError("Please enter name");
+//                        } else if (address.isEmpty()) {
+//                            etADAddress.setError("Please enter address");
+//                        } else {
+////                            Intent productIntent = new Intent(AddDeliveryDetails.this, BuyActivity.class);
+////                            //productIntent.putExtra("product_key", );
+////                            productIntent.putExtra("product_name", product_name);
+////                            productIntent.putExtra("product_price", product_price);
+////                            productIntent.putExtra("product_image", product_image);
+////                            productIntent.putExtra("product_description", product_description);
+////                            productIntent.putExtra("seller_name", seller_name);
+////                            productIntent.putExtra("name", name);
+////                            productIntent.putExtra("address", address);
+////                            startActivity(productIntent);
+//                        }
+//
+//                    }
+//                });
+//            }
+//
+//            etADAddress.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    tvWordsCounter.setText(String.valueOf(s.length()) + " characters");
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                }
+//            });
+//
+//        }
 
 
 

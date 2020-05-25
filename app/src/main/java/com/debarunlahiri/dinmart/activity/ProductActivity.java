@@ -209,9 +209,9 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         ibProductMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (itemCount >= 1) {
-                    itemCount = Integer.parseInt(tvProductCount.getText().toString());
-                    tvProductCount.setText(String.valueOf(--itemCount));
+                if (itemCount > 1) {
+                    itemCount = itemCount - 1;
+                    tvProductCount.setText(String.valueOf(itemCount));
                     int total_price = Integer.parseInt(product_price)*itemCount;
                     mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
                     mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));
@@ -223,8 +223,8 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         ibProductPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemCount = Integer.parseInt(tvProductCount.getText().toString());
-                tvProductCount.setText(String.valueOf(++itemCount));
+                itemCount = itemCount = itemCount + 1;
+                tvProductCount.setText(String.valueOf(itemCount));
                 int total_price = Integer.parseInt(product_price)*itemCount;
                 mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("total_product_price").setValue(String.valueOf(total_price));
                 mDatabase.child("cart").child(Variables.global_user_id).child(product_key).child("product_item_count").setValue(String.valueOf(itemCount));

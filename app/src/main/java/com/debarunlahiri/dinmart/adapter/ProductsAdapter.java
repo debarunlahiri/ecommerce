@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import com.debarunlahiri.dinmart.activity.AddDeliveryDetails;
 import com.debarunlahiri.dinmart.activity.CardLoginActivity;
+import com.debarunlahiri.dinmart.activity.HomeActivity;
 import com.debarunlahiri.dinmart.activity.ProductActivity;
+import com.debarunlahiri.dinmart.fragment.ProductListFragment;
 import com.debarunlahiri.dinmart.model.Products;
 import com.debarunlahiri.dinmart.next.R;
 import com.debarunlahiri.dinmart.utils.Variables;
@@ -157,6 +159,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
                 productIntent.putExtra("product_category", products.getProduct_category());
                 productIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(productIntent);
+
+//                Variables.product_category = products.getProduct_category();
+//                Variables.product_key = products.getProduct_key();
+//                ((HomeActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.flHome, new ProductListFragment()).commit();
             }
         });
 
@@ -198,7 +204,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         viewHolder.ibProductMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (itemCount >= 1) {
+                if (itemCount > 1) {
                     itemCount = Integer.parseInt(viewHolder.tvProductCount.getText().toString());
                     viewHolder.tvProductCount.setText(String.valueOf(--itemCount));
                     int total_price = Integer.parseInt(products.getProduct_price())*itemCount;

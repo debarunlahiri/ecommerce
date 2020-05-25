@@ -395,6 +395,8 @@ public class CardLoginActivity extends AppCompatActivity implements GoogleApiCli
         if (addresses != null) {
             address = addresses.get(0).getAddressLine(0);
             etAddress.setText(address);
+
+            Toast.makeText(getApplicationContext(), address, Toast.LENGTH_LONG).show();
         }
     }
 

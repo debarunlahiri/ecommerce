@@ -17,10 +17,13 @@ import android.widget.Toast;
 import com.debarunlahiri.dinmart.MainActivity;
 import com.debarunlahiri.dinmart.activity.AboutActivity;
 import com.debarunlahiri.dinmart.AddProductActivity;
+import com.debarunlahiri.dinmart.activity.AddDeliveryDetails;
+import com.debarunlahiri.dinmart.activity.DeliveryAddressActivity;
 import com.debarunlahiri.dinmart.activity.EditUserInfoActivity;
 import com.debarunlahiri.dinmart.next.R;
 import com.debarunlahiri.dinmart.StartActivity;
 import com.debarunlahiri.dinmart.business.BusinessViewAllOrdersActivity;
+import com.debarunlahiri.dinmart.utils.Variables;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +39,7 @@ public class SettingFragment extends Fragment {
 
     private Toolbar settingstoolbar;
 
-    private TextView tvSettingsLogout, tvSettingsCreateB, tvSettingsBAP, tvSettingsECI, textView15, textView11, textView55, tvSettingsVAP;
+    private TextView tvSettingsLogout, tvSettingsCreateB, tvSettingsBAP, tvSettingsECI, textView15, textView11, textView55, tvSettingsVAP, tvSettingsEditDelivery;
     private CardView cvSettingsBusiness, cvSettingsUser;
     private TextView tvViewOrders;
 
@@ -78,9 +81,10 @@ public class SettingFragment extends Fragment {
         cvSettingsBusiness = view.findViewById(R.id.cvSettingsBusiness);
         tvViewOrders = view.findViewById(R.id.tvViewOrders);
         cvSettingsUser = view.findViewById(R.id.cvSettingsUser);
+        tvSettingsEditDelivery = view.findViewById(R.id.tvSettingsEditDelivery);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
@@ -90,15 +94,12 @@ public class SettingFragment extends Fragment {
             cvSettingsBusiness.setVisibility(View.GONE);
             user_id = currentUser.getUid();
             cvSettingsUser.setVisibility(View.VISIBLE);
-            mDatabase.child("admin").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            Toast.makeText(getActivity(), user_id, Toast.LENGTH_LONG).show();
+            mDatabase.child("admin").child(Variables.global_user_id).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        if (dataSnapshot.child("user_id").equals(user_id)) {
-                            cvSettingsBusiness.setVisibility(View.VISIBLE);
-                        } else {
-                            cvSettingsBusiness.setVisibility(View.GONE);
-                        }
+                        cvSettingsBusiness.setVisibility(View.VISIBLE);
                     } else {
                         cvSettingsBusiness.setVisibility(View.GONE);
                     }
@@ -139,6 +140,15 @@ public class SettingFragment extends Fragment {
             public void onClick(View v) {
                 Intent addProductIntent = new Intent(getActivity(), BusinessViewAllOrdersActivity.class);
                 startActivity(addProductIntent);
+            }
+        });
+
+        tvSettingsEditDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editDeliveryIntent = new Intent(getActivity(), AddDeliveryDetails.class);
+                editDeliveryIntent.putExtra("type", "edit");
+                startActivity(editDeliveryIntent);
             }
         });
 
