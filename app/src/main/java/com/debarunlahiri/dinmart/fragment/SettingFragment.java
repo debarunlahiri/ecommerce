@@ -146,7 +146,7 @@ public class SettingFragment extends Fragment {
         tvSettingsEditDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editDeliveryIntent = new Intent(getActivity(), AddDeliveryDetails.class);
+                Intent editDeliveryIntent = new Intent(getActivity(), DeliveryAddressActivity.class);
                 editDeliveryIntent.putExtra("type", "edit");
                 startActivity(editDeliveryIntent);
             }

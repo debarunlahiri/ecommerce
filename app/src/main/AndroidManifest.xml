@@ -19,7 +19,8 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.debarunlahiri.dinmart.activity.DeliveryAddressActivity"></activity>
+        <activity android:name="com.debarunlahiri.dinmart.activity.DeliveryAddressActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"></activity>
         <activity android:name="com.debarunlahiri.dinmart.activity.EditProductActivity" />
         <activity android:name="com.debarunlahiri.dinmart.activity.CardLoginActivity" />
         <activity android:name="com.debarunlahiri.dinmart.activity.PrivacyPolicyActivity" />

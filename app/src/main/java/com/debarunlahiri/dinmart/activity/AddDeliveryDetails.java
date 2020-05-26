@@ -5,6 +5,8 @@ import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.location.Geocoder;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,8 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.debarunlahiri.dinmart.model.Address;
 import com.debarunlahiri.dinmart.next.R;
 import com.debarunlahiri.dinmart.utils.Variables;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,12 +31,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
 public class AddDeliveryDetails extends AppCompatActivity {
 
     private Toolbar toolbar14;
-    private Button button10;
-    private EditText etADAddress, etADName;
-    private TextView tvWordsCounter;
+    private Button bSaveAddress;
+    private EditText etFullName, etMobNo, etPincode, etHseNo, etColony, etLandmark;
+    private TextView tvCity, tvState, tvCityHeader, tvStateHeader;
 
     private DatabaseReference mDatabase;
     private FirebaseUser currentUser;
@@ -50,11 +60,14 @@ public class AddDeliveryDetails extends AppCompatActivity {
     private String product_category = "";
     private String from_cart;
     private String type;
+    private String address_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_delivery_details);
+
+        address_id = getIntent().getStringExtra("address_id");
 
 //        Bundle bundle = getIntent().getExtras();
 //        from_cart = bundle.get("from_cart").toString();
@@ -71,7 +84,11 @@ public class AddDeliveryDetails extends AppCompatActivity {
 //        type = getIntent().getStringExtra("type");
 
         toolbar14 = findViewById(R.id.toolbar14);
-        toolbar14.setTitle("Add Details");
+        if (getIntent().getStringExtra("type") != null) {
+            toolbar14.setTitle("Edit Address");
+        } else {
+            toolbar14.setTitle("Add Address");
+        }
         toolbar14.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar14);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -84,14 +101,119 @@ public class AddDeliveryDetails extends AppCompatActivity {
             }
         });
 
-        etADAddress = findViewById(R.id.etADAddress);
-        etADName = findViewById(R.id.etADName);
-        button10 = findViewById(R.id.button10);
-        tvWordsCounter = findViewById(R.id.tvWordsCounter);
+        etFullName = findViewById(R.id.etFullName);
+        etMobNo = findViewById(R.id.etMobNo);
+        etPincode = findViewById(R.id.etPincode);
+        etColony = findViewById(R.id.etColony);
+        etLandmark = findViewById(R.id.etLandmark);
+        etHseNo = findViewById(R.id.etHseNo);
+        bSaveAddress = findViewById(R.id.bSaveAddress);
+        tvCity = findViewById(R.id.tvCity);
+        tvState = findViewById(R.id.tvState);
+        tvCityHeader = findViewById(R.id.tvCityHeader);
+        tvStateHeader = findViewById(R.id.tvStateHeader);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        if (address_id != null) {
+            mDatabase.child("users").child(Variables.global_user_id).child("address_list").child(address_id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Address address = dataSnapshot.getValue(Address.class);
+
+                    etFullName.setText(address.getName());
+                    etMobNo.setText(address.getPhone());
+                    etFullName.setText(address.getName());
+                    etPincode.setText(address.getPincode());
+                    etColony.setText(address.getColony());
+                    etLandmark.setText(address.getLandmark());
+                    etHseNo.setText(address.getHouse_no());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+        bSaveAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = etFullName.getText().toString();
+                String mob_no = etMobNo.getText().toString();
+                String pincode = etPincode.getText().toString();
+                String house_no = etHseNo.getText().toString();
+                String colony = etColony.getText().toString();
+                String landmark = etLandmark.getText().toString();
+                String city = tvCity.getText().toString();
+                String state = tvState.getText().toString();
+
+                if (name.isEmpty()) {
+                    etFullName.setError("Please enter name");
+                } else if (mob_no.isEmpty()) {
+                    etMobNo.setError("Please enter mobile number");
+                } else if (pincode.isEmpty()) {
+                    etPincode.setError("Please enter pincode");
+                } else if (colony.isEmpty()) {
+                    etColony.setError("Please enter this field");
+                } else if (house_no.isEmpty()) {
+                    etHseNo.setError("Please enter this field");
+                } else if (landmark.isEmpty()) {
+                    etLandmark.setError("Please enter landmark");
+                } else if (pincode.contains("-")) {
+                    etPincode.setError("Please enter proper pincode");
+                } else if (mob_no.contains("-")) {
+                    etMobNo.setError("Please enter prober mob no.");
+                } else {
+                    String address = house_no + ", " + colony + ", " + city + ", " + state + ", " + pincode + "\n" + landmark;
+                    String address_id = mDatabase.child("users").child(Variables.global_user_id).child("address_list").push().getKey();
+                    HashMap<String, Object> mAddressDataMap = new HashMap<>();
+                    mAddressDataMap.put("name", name);
+                    mAddressDataMap.put("phone", mob_no);
+                    mAddressDataMap.put("house_no", house_no);
+                    mAddressDataMap.put("colony", colony);
+                    mAddressDataMap.put("landmark", landmark);
+                    mAddressDataMap.put("pincode", pincode);
+                    mAddressDataMap.put("city", city);
+                    mAddressDataMap.put("state", state);
+                    mAddressDataMap.put("full_address", address);
+                    mAddressDataMap.put("address_id", address_id);
+                    mAddressDataMap.put("isDefault", false);
+
+                    mDatabase.child("users").child(Variables.global_user_id).child("address_list").child(address_id).updateChildren(mAddressDataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Address successfully saved", Toast.LENGTH_LONG).show();
+                                onBackPressed();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
+
+
+        });
+
+        tvCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Currently we are delivery to this city", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        tvState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Currently we are delivery to this state", Toast.LENGTH_LONG).show();
+            }
+        });
 
 //        if (currentUser == null) {
 //            Toast.makeText(getApplicationContext(), "Please login again", Toast.LENGTH_LONG).show();

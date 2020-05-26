@@ -53,13 +53,13 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editText6"
+                        android:id="@+id/etFullName"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/edittext_border_bg"
                         android:ems="10"
                         android:hint="Enter your full name"
-                        android:inputType="textPersonName"
+                        android:inputType="textPersonName|textCapWords"
                         android:padding="8dp" />
 
                     <TextView
@@ -73,13 +73,14 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editText7"
+                        android:id="@+id/etMobNo"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/edittext_border_bg"
                         android:ems="10"
+                        android:maxLength="10"
                         android:hint="Enter your mobile number"
-                        android:inputType="phone"
+                        android:inputType="numberSigned"
                         android:padding="8dp" />
 
                     <TextView
@@ -99,11 +100,12 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editText8"
+                        android:id="@+id/etPincode"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/edittext_border_bg"
                         android:ems="10"
+                        android:maxLength="6"
                         android:hint="6 digits [0-9] PIN code"
                         android:inputType="numberSigned"
                         android:padding="8dp" />
@@ -119,12 +121,12 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editText9"
+                        android:id="@+id/etHseNo"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/edittext_border_bg"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="textPersonName|textCapWords"
                         android:padding="8dp" />
 
                     <TextView
@@ -138,12 +140,12 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editText10"
+                        android:id="@+id/etColony"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/edittext_border_bg"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="textPersonName|textCapWords"
                         android:padding="8dp" />
 
                     <TextView
@@ -157,17 +159,55 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editText11"
+                        android:id="@+id/etLandmark"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/edittext_border_bg"
                         android:ems="10"
                         android:hint="Near ABES Engineering College"
-                        android:inputType="textPersonName"
+                        android:inputType="textPersonName|textCapWords"
                         android:padding="8dp" />
 
+                    <TextView
+                        android:id="@+id/tvCityHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Town/City"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Ghaziabad"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvStateHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="State / Province / Region"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Uttar Pradesh"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
                     <Button
-                        android:id="@+id/button12"
+                        android:id="@+id/bSaveAddress"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_margin="8dp"
